@@ -1,9 +1,23 @@
 
+# Paciente
+
+curl -X POST "http://localhost:8090/fhir/Patient" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Patient",
+    "name": [{
+      "use": "official",
+      "family": "Pérez",
+      "given": ["Juan"]
+    }],
+    "gender": "male",
+    "birthDate": "1985-03-21"
+  }'
 
 
-# Curl
+# Receta
 
-curl -X POST "http://localhost:8090/MedicationRequest" \
+curl -X POST "http://localhost:8090/fhir/MedicationRequest" \
   -H "Content-Type: application/fhir+json" \
   -d '{
     "resourceType": "MedicationRequest",
@@ -52,8 +66,5 @@ curl -X POST "http://localhost:8090/MedicationRequest" \
           }
         ]
       }
-    ],
-    "requester": {
-      "reference": "Practitioner/456"
-    }
+    ]
   }'
