@@ -9,9 +9,12 @@ services:
       spring.datasource.username: 'admin'
       spring.datasource.password: 'admin'
       spring.datasource.driverClassName: org.postgresql.Driver 
+      hapi.fhir.openapi_enabled: "true"
       hapi.fhir.subscription.resthook_enabled: "true"
       hapi.fhir.subscription.websocket_enabled: "true"
       hapi.fhir.client_id_strategy: ANY
+    depends_on:
+      - fhir-db
   fhir-db:
     image: postgres
     volumes:

@@ -1,10 +1,15 @@
 
+
+
 # Paciente
 
 curl -X POST "http://localhost:8090/fhir/Patient" \
   -H "Content-Type: application/fhir+json" \
   -d '{
     "resourceType": "Patient",
+    "identifier": { 
+      "value": 1234 
+    },
     "name": [{
       "use": "official",
       "family": "Pérez",
@@ -14,6 +19,36 @@ curl -X POST "http://localhost:8090/fhir/Patient" \
     "birthDate": "1985-03-21"
   }'
 
+curl -X POST "http://localhost:8090/fhir/Patient" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Patient",
+    "identifier": [
+      {
+        "system": "http://hospital.local/pacientes",
+        "value": "1235"
+      }
+    ],
+    "name": [
+      {
+        "family": "Rodríguez",
+        "given": ["Luis"]
+      }
+    ],
+    "gender": "male",
+    "birthDate": "1992-05-10"
+  }'
+
+curl -X GET "http://localhost:8090/fhir/Patient?identifier=http%3A%2F%2Fhospital.local%2Fpacientes%7C1235" \
+  -H "Accept: application/fhir+json"
+
+
+
+curl "http://localhost:8090/fhir/Patient"
+
+curl -X GET "http://localhost:8090/fhir/Patient?identifier=12345" -H "Accept: application/fhir+json"
+
+
 
 # Receta
 
@@ -21,50 +56,28 @@ curl -X POST "http://localhost:8090/fhir/MedicationRequest" \
   -H "Content-Type: application/fhir+json" \
   -d '{
     "resourceType": "MedicationRequest",
-    "status": "active",
+    "status": "active",    
+    "identifier": { "value": "RH12354" },
     "intent": "order",
+    "informationSource": {
+    },
     "medicationCodeableConcept": {
       "coding": [
         {
-          "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
-          "code": "860975",
           "display": "Paracetamol 500mg tablet"
         }
       ]
     },
+    "reasonCode": [
+        {
+          "text": "Infección respiratoria"
+        }
+      ],
     "subject": {
-      "reference": "Patient/a3843b6d-1703-4149-a9e5-951d397691c8"
+      "reference": "Patient?identifier=1234"
     },
-    "authoredOn": "2025-08-05",
-    "dosageInstruction": [
-      {
-        "text": "Tomar 1 tableta cada 8 horas por 5 días",
-        "timing": {
-          "repeat": {
-            "frequency": 3,
-            "period": 1,
-            "periodUnit": "d"
-          }
-        },
-        "route": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/route-codes",
-              "code": "PO",
-              "display": "Oral"
-            }
-          ]
-        },
-        "doseAndRate": [
-          {
-            "doseQuantity": {
-              "value": 500,
-              "unit": "mg",
-              "system": "http://unitsofmeasure.org",
-              "code": "mg"
-            }
-          }
-        ]
-      }
-    ]
+    "authoredOn": "2025-08-05"
   }'
+
+#  "reference": "Patient?identifier=http%3A%2F%2Fhospital.local%2Fpacientes%7C1235"
+curl -X GET "http://localhost:8090/fhir/MedicationRequest?identifier=RH1234" -H "Accept: application/fhir+json"
