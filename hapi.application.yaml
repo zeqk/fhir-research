@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://fhir-db:5432/hapi_r4'
+    username: admin
+    password: admin
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      hibernate.search.enabled: false
+      hibernate.hbm2ddl.auto: update
+
+hapi:
+  fhir:
+    openapi_enabled: true
+    fhir_version: R4
